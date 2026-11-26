@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>商品セレクト｜mimi desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&family=Kosugi+Maru&family=Zen+Maru+Gothic:wght@700&family=Noto+Sans+JP:wght@400;700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--fs:0px;--bg:#73bcb4;--accent:#7b5644;--ink:#4a3830;--muted:#7d6b62;--line:#e3ebe9;--mint:#e3f4f2;--field:#f1f8f7;--pink:#c98682}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);font-family:"Noto Sans JP","Noto Sans KR",sans-serif;font-size:calc(17px + var(--fs));line-height:1.6;-webkit-text-size-adjust:100%}
+.wrap{max-width:720px;margin:0 auto;padding:0 12px 140px}
+header{padding:18px 4px 10px}
+header .en{font-family:Quicksand,sans-serif;color:var(--bg);letter-spacing:.25em;font-size:calc(12px + var(--fs))}
+header h1{font-family:"Zen Maru Gothic",sans-serif;font-size:min(26px,6vw);white-space:nowrap;margin:2px 0 4px;color:var(--accent)}
+header p{margin:0;font-size:calc(15px + var(--fs));color:var(--muted)}
+.bar{position:sticky;top:0;z-index:5;background:rgba(255,255,255,.96);backdrop-filter:blur(6px);padding:10px 0;border-bottom:1px solid var(--line);display:flex;gap:8px;align-items:center}
+.seg{display:flex;background:var(--field);border:2px solid var(--accent);border-radius:14px;padding:3px;flex:1}
+.seg button{flex:1;border:0;background:none;font:inherit;font-size:calc(17px + var(--fs));font-weight:700;color:var(--accent);padding:9px 6px;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+.seg svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.seg button.on{background:var(--accent);color:#fff}
+.bar input{flex:1;min-width:0;font:inherit;font-size:calc(14px + var(--fs));border:1.5px solid var(--line);border-radius:999px;padding:7px 12px;background:var(--field);outline:none}
+.only{display:flex;align-items:center;gap:4px;font-size:calc(14px + var(--fs));font-weight:700;line-height:1.3;color:var(--muted);flex:none;white-space:nowrap}
+/* card view */
+.cards{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.card{border:2px solid var(--line);border-radius:16px;overflow:hidden;background:#fff;cursor:pointer}
+.card.sel{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent) inset}
+.strip{display:flex;gap:5px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px;background:var(--field)}
+.strip img,.strip .ph{flex:none;height:min(24vh,220px);aspect-ratio:3/4;width:auto;border-radius:10px;object-fit:cover;scroll-snap-align:start}
+.strip .ph{display:grid;place-items:center;color:#fff;font-family:Quicksand;font-weight:700;font-size:calc(13px + var(--fs))}
+.cnt{display:none}
+.info{display:flex;gap:10px;padding:4px 12px 8px;cursor:pointer;align-items:flex-start}
+.chk{flex:none;width:30px;height:30px;border-radius:8px;border:2px solid #cfd8d6;display:grid;place-items:center;background:#fff}
+.sel .chk{background:var(--accent);border-color:var(--accent)}
+.sel .chk::after{content:"";width:9px;height:15px;border:solid #fff;border-width:0 3px 3px 0;transform:rotate(45deg) translate(-1px,-2px)}
+.meta{flex:1;min-width:0}
+.price{font-family:Quicksand;font-weight:700;color:var(--accent);font-size:calc(26px + var(--fs));line-height:1.15;white-space:nowrap}
+.nm{font-size:calc(15px + var(--fs));font-weight:700;color:var(--muted);line-height:1.4;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nm b{font-weight:700;color:var(--ink);font-family:"Noto Sans KR",sans-serif}
+.dt{font-size:calc(14px + var(--fs));font-weight:700;color:var(--muted);line-height:1.45;margin-top:1px}
+.col{display:inline-flex;align-items:center;gap:3px;margin-right:8px}
+.col i{width:9px;height:9px;border-radius:50%;border:1px solid rgba(0,0,0,.1)}
+/* grid view */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 8px;margin-top:14px}
+@media(min-width:560px){.grid{grid-template-columns:repeat(4,1fr)}}
+.tile{cursor:pointer;min-width:0}
+.tile .ph,.tile img{width:100%;aspect-ratio:3/4;border-radius:10px;object-fit:cover;display:grid;place-items:center;color:#fff;font-family:Quicksand;font-size:calc(11px + var(--fs))}
+.tile .pw{position:relative}
+.tile .chk{position:absolute;top:6px;right:6px;width:24px;height:24px;border-radius:7px;background:rgba(255,255,255,.9)}
+.tile.sel .chk{background:var(--accent);border-color:var(--accent)}
+.tile.sel .chk::after{width:7px;height:12px}
+.tile.sel .pw img,.tile.sel .pw .ph{outline:3px solid var(--accent);outline-offset:-3px}
+.tile .price{font-size:calc(21px + var(--fs));margin-top:4px}
+.tile .tn{font-size:calc(15px + var(--fs));font-weight:700;color:var(--ink);line-height:1.4;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.tile .ts{font-size:calc(13.5px + var(--fs));font-weight:700;color:var(--muted);line-height:1.45;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* bottom */
+.foot{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);padding:10px 12px calc(10px + env(safe-area-inset-bottom));z-index:6}
+.foot .in{max-width:720px;margin:0 auto;display:flex;gap:8px;align-items:center}
+.sum{flex:1;white-space:nowrap;font-size:15px;line-height:1.4}
+.sum b{font-family:Quicksand;font-size:18px;color:var(--accent)}
+.btn{border:0;border-radius:12px;font:inherit;font-weight:700;font-size:15px;padding:12px 14px;cursor:pointer}
+.copy{background:var(--accent);color:#fff}
+.line{background:#06c755;color:#fff;text-decoration:none;display:inline-block}
+.toast{position:fixed;left:50%;bottom:86px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:999px;font-size:calc(13px + var(--fs));opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap}
+.toast.on{opacity:1}
+.empty{padding:30px;text-align:center;color:var(--muted)}
+[hidden]{display:none!important}
+.fsz{display:flex;align-items:center;justify-content:flex-end;gap:6px;margin-top:10px;font-size:14px;font-weight:700;color:var(--muted)}
+.fsz button{border:1.5px solid var(--accent);background:#fff;color:var(--accent);font:inherit;font-weight:700;border-radius:999px;width:40px;height:34px;cursor:pointer}
+.fsz button:nth-of-type(2){font-size:16px}.fsz button:nth-of-type(3){font-size:19px}
+.fsz button.on{background:var(--accent);color:#fff}
+.ex{color:#c97a6a!important}
+img{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;-webkit-user-drag:none}
+.ctab{display:grid;grid-template-columns:auto auto 1fr;gap:0 14px;margin:2px 0 3px}
+.ctab span:nth-child(3n+1){font-family:"Noto Sans KR",sans-serif}
+.opt{margin-top:8px;display:flex;flex-direction:column;gap:6px}
+.oq{font-size:calc(12px + var(--fs));font-weight:700;color:#c97a6a}
+.opt button{border:1.5px solid var(--accent);background:#fff;color:var(--accent);border-radius:10px;padding:7px 10px;font:inherit;font-size:calc(13px + var(--fs));font-weight:700;text-align:left;line-height:1.35;cursor:pointer}
+.opt button small{display:block;font-size:.85em;font-weight:400}
+.opt button.on{background:var(--accent);color:#fff}
+.tile .opt button{padding:5px 6px;font-size:calc(11px + var(--fs))}
+.tile .oq{font-size:calc(10.5px + var(--fs))}
+.bar{flex-wrap:wrap}
+.bar2{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+#all{border:1.5px solid var(--accent);background:#fff;color:var(--accent);border-radius:999px;padding:7px 16px;font:inherit;font-weight:700;font-size:calc(14px + var(--fs));cursor:pointer}
+#all.on{background:var(--accent);color:#fff}
+.otop{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.otop button{text-align:center}
+.otop button[data-o=chg]{white-space:nowrap}
+.osub{display:flex;flex-direction:column;gap:6px;padding-left:12px;border-left:3px solid var(--line)}
+.tile .otop{grid-template-columns:1fr}
+.opt .orad{display:flex;align-items:center;gap:8px;background:#fff;color:var(--ink);border-color:var(--line)}
+.opt .orad i{flex:none;width:18px;height:18px;border-radius:50%;border:2px solid #cfd8d6;position:relative}
+.opt .orad.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.opt .orad.on i{border-color:#fff}
+.opt .orad.on i::after{content:"";position:absolute;inset:3px;border-radius:50%;background:#fff}
+.formbtn{display:block;margin-top:12px;text-align:center;background:var(--bg);color:#fff;text-decoration:none;font-weight:700;font-size:calc(16px + var(--fs));padding:12px;border-radius:12px}
+.formbtn{display:flex!important;align-items:center;justify-content:center;gap:10px;padding:9px 30px!important;width:fit-content;margin:0 0 10px auto!important;border-radius:999px!important}
+.formbtn img{width:min(130px,36vw);height:auto;-webkit-touch-callout:default}
+.formbtn span{display:flex}
+.htop{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.deskicon{width:56px;height:56px;border-radius:12px;display:block}
+.htop .formbtn{margin:0!important}
+header{padding-top:0!important}
+.htop{background:var(--bg);margin:0 0 14px!important;padding:12px 0;box-shadow:0 0 0 100vmax var(--bg);clip-path:inset(0 -100vmax)}
+html,body{overflow-x:hidden}
+.formbtn{background:#fff!important;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.deskicon{box-shadow:0 0 0 1.5px rgba(255,255,255,.8)}
+.deskicon{width:auto!important;height:74px!important;border-radius:0!important;box-shadow:none!important}
+.steps{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:4px}
+.steps li{display:flex;align-items:center;gap:8px;font-size:calc(14px + var(--fs));font-weight:700;color:var(--ink)}
+.steps b{flex:none;font-family:Quicksand,sans-serif;font-size:calc(12px + var(--fs));color:#fff;background:var(--bg);border-radius:999px;padding:1px 9px}
+.formbtn .ft{font-family:"Kosugi Maru",sans-serif;font-weight:400;color:var(--bg);font-size:calc(18px + var(--fs));line-height:1.35;letter-spacing:.06em;text-align:left;display:block!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="htop"><img class="deskicon" src="../assets/deskicon.png" alt="mimi desk"><a class="formbtn" href="https://mimidesk.netlify.app/" target="_blank" rel="noopener"><span class="ft">商品登録代行<br>ご依頼フォームはこちら</span><span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#73bcb4" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></span></a></div>
+  <h1 id="brandTitle">商品セレクト</h1>
+  <ol class="steps"><li><b>Step1</b>登録したい商品にチェックを入れる</li><li><b>Step2</b>下の「選んだ商品をコピー」を押す</li><li><b>Step3</b>LINEに送る</li></ol>
+  <div class="fsz">文字の大きさ<button type="button" data-f="-2">小</button><button type="button" data-f="0">中</button><button type="button" data-f="2">大</button></div>
+</header>
+<div class="bar">
+  <div class="seg" role="tablist"><button type="button" data-v="card" class="on"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="7" height="14" rx="1.5"/><rect x="12" y="5" width="7" height="14" rx="1.5"/><path d="M21 8v8"/></svg>詳細</button><button type="button" data-v="list"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>一覧</button></div>
+  </div>
+<div class="bar2"><button type="button" id="all">すべて選択</button><label class="only"><input type="checkbox" id="onlySel">選んだものだけ表示する</label></div>
+<div id="cardView" class="cards"></div>
+<div id="listView" class="grid" hidden></div>
+<div class="empty" id="empty" hidden>該当する商品がありません</div>
+</div>
+<div class="foot"><div class="in">
+  <div class="sum"><b id="n">0</b> 点選択中<br><span id="tot">合計 ₩0</span></div>
+  <button type="button" class="btn copy" id="copy">選んだ商品をコピー</button>
+  <a class="btn line" href="https://lin.ee/tfXbYzT" target="_blank" rel="noopener">LINE</a>
+</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ===== データ（Claude Codeでブランドごとに差し替える） =====
+  photos: 画像URLの配列（最大20）。空なら色見本で表示 */
+const DATA = {
+ "brand": "BRAND NAME",
+ "season": "2026 WINTER",
+ "drop": "1st",
+ "items": [
+  {
+   "no": "01",
+   "ko": "상품명",
+   "en": "Item Name",
+   "ja": "商品名",
+   "price": 10000,
+   "extra": "",
+   "colors": [
+    {
+     "ko": "아이보리",
+     "en": "Ivory",
+     "ja": "アイボリー",
+     "hex": "#ccc"
+    }
+   ],
+   "sizes": "XS / S / M / L / XL",
+   "photos": []
+  },
+  {
+   "no": "02",
+   "ko": "상품명",
+   "en": "Item Name",
+   "ja": "商品名",
+   "price": 20000,
+   "extra": "MOM ₩36,000",
+   "colors": [
+    {
+     "ko": "핑크",
+     "en": "Pink",
+     "ja": "ピンク",
+     "hex": "#ccc"
+    }
+   ],
+   "sizes": "XS / S / M / L / XL",
+   "photos": []
+  }
+ ]
+};
+/* ===================================================== */
+const $ = id => document.getElementById(id);
+const sel = new Set(JSON.parse(sessionStorage.getItem('pk-sel') || '[]'));
+let view = 'card';
+const opt = JSON.parse(sessionStorage.getItem('pk-opt3') || '{}');
+const OPTS = {form:'依頼フォーム優先（2-3, 2-4）', high:'高い金額に合わせる', split:'商品を分ける（追加料金なし）', app:'商品オプションappで登録する（ご自身での登録が必要）'};
+const optHtml = (it, compact) => { if (!it.extra) return ''; if (compact) return '<div class="opt"><div class="oq">※価格が違うカラーorサイズがあります</div></div>'; const o = opt[it.no] || 'form';
+  return `<div class="opt" data-opt="${it.no}"><div class="oq">※価格が違うカラーorサイズがあります</div>${Object.keys(OPTS).map(k=>`<button type="button" data-o="${k}" class="orad ${o===k?'on':''}"><i></i><span>${OPTS[k].replace('（','<br>（')}</span></button>`).join('')}</div>`; };
+$('brandTitle').textContent = [DATA.brand, DATA.season, DATA.drop].filter(Boolean).join(' ');
+const yen = n => '₩' + n.toLocaleString('ko-KR');
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function photos(it, size) {
+  if (it.photos.length) return it.photos.slice(0,20).map(u => `<img src="${esc(u)}" alt="" loading="lazy">`);
+  const n = Math.min(it.n || 6, 20);
+  return Array.from({length: size === 'thumb' ? 1 : n}, (_, i) => { const c = it.colors[i % it.colors.length].hex; return `<div class="ph" style="background:${c}">${i+1}</div>`; });
+}
+const colorsHtml = it => !it.colors.length ? 'カラー：写真で確認<br>' : ['ko','en','ja'].map(l=>it.colors.map(c=>esc(c[l])).join('・')).join(' ｜ ')+'<br>';
+function match(it) {
+  const q = '';
+  if ($('onlySel').checked && !sel.has(it.no)) return false;
+  if (!q) return true;
+  return [it.no,it.ko,it.en,it.ja,...it.colors.flatMap(c=>[c.ko,c.en,c.ja])].join(' ').toLowerCase().includes(q);
+}
+function render() {
+  const items = DATA.items.filter(match);
+  $('empty').hidden = !!items.length;
+  $('cardView').hidden = view !== 'card' || !items.length;
+  $('listView').hidden = view !== 'list' || !items.length;
+  if (view === 'card') {
+    $('cardView').innerHTML = items.map(it => `<article class="card ${sel.has(it.no)?'sel':''}" data-toggle="${it.no}">
+      <div class="strip">${photos(it).join('')}</div>
+      <div class="cnt">写真 ${it.photos.length || Math.min(it.n||6,20)}枚・横にスクロール →</div>
+      <div class="info"><div class="meta"><div class="price">${yen(it.price)}</div>
+        <div class="nm">${it.no}　<b>${esc(it.ko)}</b> ｜ ${esc(it.en)} ｜ ${esc(it.ja)}</div>
+        <div class="dt">${colorsHtml(it)}${esc(it.sizes)}${it.extra?'　<span class="ex">'+esc(it.extra)+'</span>':''}</div>${optHtml(it)}</div>
+        <span class="chk" role="checkbox" aria-checked="${sel.has(it.no)}"></span></div></article>`).join('');
+  } else {
+    $('listView').innerHTML = items.map(it => `<div class="tile ${sel.has(it.no)?'sel':''}" data-toggle="${it.no}">
+      <div class="pw">${photos(it,'thumb')[0]}<span class="chk" role="checkbox" aria-checked="${sel.has(it.no)}"></span></div>
+      <div class="price">${yen(it.price)}</div>
+      <div class="tn">${it.no} ${esc(it.ko)} ｜ ${esc(it.ja)}</div>
+      <div class="ts">${it.colors.length?it.colors.map(c=>esc(c.en)).join('・'):'カラー：写真で確認'}</div>
+      <div class="ts">${esc(it.sizes)}</div>${it.extra?'<div class="ts ex">'+esc(it.extra)+'</div>':''}${optHtml(it,true)}</div>`).join('');
+  }
+  const picked = DATA.items.filter(it => sel.has(it.no));
+  $('n').textContent = picked.length;
+  $('tot').textContent = '合計 ' + yen(picked.reduce((s,it)=>s+it.price,0));
+  const allOn = DATA.items.every(it=>sel.has(it.no)); $('all').textContent = allOn ? 'すべて解除' : 'すべて選択'; $('all').classList.toggle('on', allOn);
+  sessionStorage.setItem('pk-sel', JSON.stringify([...sel]));
+}
+document.addEventListener('click', e => {
+  const ob = e.target.closest('.opt button');
+  if (ob) { const no = ob.closest('.opt').dataset.opt; opt[no] = ob.dataset.o; sel.add(no); sessionStorage.setItem('pk-opt3', JSON.stringify(opt)); render(); return; }
+  if (e.target.closest('.opt')) return;
+  const t = e.target.closest('[data-toggle]'); if (!t) return;
+  const no = t.dataset.toggle; sel.has(no) ? sel.delete(no) : sel.add(no); render();
+});
+document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => {
+  view = b.dataset.v; document.querySelectorAll('.seg button').forEach(x => x.classList.toggle('on', x === b)); render();
+}));
+$('onlySel').addEventListener('change', render);
+$('all').addEventListener('click', () => { const allOn = DATA.items.every(it=>sel.has(it.no)); DATA.items.forEach(it => allOn ? sel.delete(it.no) : sel.add(it.no)); render(); });
+function toast(m){ const t=$('toast'); t.textContent=m; t.classList.add('on'); setTimeout(()=>t.classList.remove('on'),2400); }
+$('copy').addEventListener('click', async () => {
+  const picked = DATA.items.filter(it => sel.has(it.no));
+  if (!picked.length) { toast('商品が選ばれていません'); return; }
+  const txt = [`【商品セレクト】${[DATA.brand, DATA.season, DATA.drop].filter(Boolean).join(' ')}`, `選択：${picked.length}点`, '',
+    ...picked.map(it => `${it.no} ${it.ko} ｜ ${it.en} ｜ ${it.ja}　${yen(it.price)}${it.extra?'（'+it.extra+'）':''}\n　カラー：${it.colors.length?['ko','en','ja'].map(l=>it.colors.map(c=>c[l]).join('・')).join(' ｜ '):'写真で確認'}\n　サイズ：${it.sizes}${it.extra?'\n　価格違い：'+OPTS[opt[it.no]||'form']:''}`)].join('\n');
+  try { await navigator.clipboard.writeText(txt); } catch (err) { const ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
+  toast('コピーしました。LINEに貼り付けて送ってください');
+});
+function setF(v){document.documentElement.style.setProperty('--fs',v+'px');document.querySelectorAll('.fsz button').forEach(b=>b.classList.toggle('on',b.dataset.f==v));try{localStorage.setItem('pk-fs2',v)}catch(e){}}
+document.querySelectorAll('.fsz button').forEach(b=>b.addEventListener('click',()=>setF(b.dataset.f)));
+let f0='-2';try{f0=localStorage.getItem('pk-fs2')||'-2'}catch(e){}setF(f0);
+document.addEventListener('contextmenu',e=>{if(e.target.tagName==='IMG')e.preventDefault()});
+render();
+</script>
+</body>
+</html>
