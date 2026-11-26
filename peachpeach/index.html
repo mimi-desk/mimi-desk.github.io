@@ -96,7 +96,9 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;-webkit
 .opt .orad.on i{border-color:var(--accent)}
 .opt .orad.on i::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--accent)}
 .formbtn{display:block;margin-top:12px;text-align:center;background:var(--bg);color:#fff;text-decoration:none;font-weight:700;font-size:calc(16px + var(--fs));padding:12px;border-radius:12px}
-.formbtn span{font-size:.9em}
+.formbtn{display:flex!important;align-items:center;justify-content:center;gap:10px;padding:14px!important}
+.formbtn img{width:min(170px,46vw);height:auto;-webkit-touch-callout:default}
+.formbtn span{font-size:1.3em;color:#fff}
 </style>
 </head>
 <body>
@@ -105,7 +107,7 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;-webkit
   <div class="en">ITEM SELECT</div>
   <h1 id="brandTitle">商品セレクト</h1>
   <p id="brandNote">登録したい商品にチェックを入れて、下の「選んだ商品をコピー」を押してください。</p>
-  <a class="formbtn" href="https://mimidesk.netlify.app/" target="_blank" rel="noopener">依頼フォームはこちら <span>↗</span></a>
+  <a class="formbtn" href="https://mimidesk.netlify.app/" target="_blank" rel="noopener"><img src="formtitle.png" alt="商品登録代行 ご依頼フォーム"><span>↗</span></a>
   <div class="fsz">文字の大きさ<button type="button" data-f="0">小</button><button type="button" data-f="2">中</button><button type="button" data-f="4">大</button></div>
 </header>
 <div class="bar">
