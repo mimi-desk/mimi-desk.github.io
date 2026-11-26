@@ -131,6 +131,7 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;-webkit
 const DATA = {
 "brand": "PEACH PEACH",
 "season": "2026 WINTER",
+"drop": "",
 "items": [
 {
 "no": "26",
@@ -1022,7 +1023,7 @@ const opt = JSON.parse(sessionStorage.getItem('pk-opt3') || '{}');
 const OPTS = {form:'依頼フォーム（2-3・2-4）優先', high:'高い金額に合わせる', split:'商品を分ける', app:'商品オプションappで登録する'};
 const optHtml = it => { if (!it.extra) return ''; const o = opt[it.no] || 'form';
   return `<div class="opt" data-opt="${it.no}"><div class="oq">※価格が違うカラーorサイズがあります</div>${Object.keys(OPTS).map(k=>`<button type="button" data-o="${k}" class="orad ${o===k?'on':''}"><i></i>${OPTS[k]}</button>`).join('')}</div>`; };
-$('brandTitle').textContent = `${DATA.brand}｜商品セレクト`;
+$('brandTitle').textContent = [DATA.brand, DATA.season, DATA.drop].filter(Boolean).join(' ');
 const yen = n => '₩' + n.toLocaleString('ko-KR');
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function photos(it, size) {
@@ -1080,7 +1081,7 @@ function toast(m){ const t=$('toast'); t.textContent=m; t.classList.add('on'); s
 $('copy').addEventListener('click', async () => {
   const picked = DATA.items.filter(it => sel.has(it.no));
   if (!picked.length) { toast('商品が選ばれていません'); return; }
-  const txt = [`【商品セレクト】${DATA.brand} ${DATA.season}`, `選択：${picked.length}点`, '',
+  const txt = [`【商品セレクト】${[DATA.brand, DATA.season, DATA.drop].filter(Boolean).join(' ')}`, `選択：${picked.length}点`, '',
     ...picked.map(it => `${it.no} ${it.ko} ｜ ${it.en} ｜ ${it.ja}　${yen(it.price)}${it.extra?'（'+it.extra+'）':''}\n　カラー：${it.colors.length?['ko','en','ja'].map(l=>it.colors.map(c=>c[l]).join('・')).join(' ｜ '):'写真で確認'}\n　サイズ：${it.sizes}${it.extra?'\n　価格違い：'+OPTS[opt[it.no]||'form']:''}`)].join('\n');
   try { await navigator.clipboard.writeText(txt); } catch (err) { const ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
   toast('コピーしました。LINEに貼り付けて送ってください');
