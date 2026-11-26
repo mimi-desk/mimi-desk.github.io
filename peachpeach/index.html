@@ -108,7 +108,7 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;-webkit
   <div class="en">ITEM SELECT</div>
   <h1 id="brandTitle">商品セレクト</h1>
   <p id="brandNote">登録したい商品にチェックを入れて、下の「選んだ商品をコピー」を押してください。</p>
-  <div class="fsz">文字の大きさ<button type="button" data-f="0">小</button><button type="button" data-f="2">中</button><button type="button" data-f="4">大</button></div>
+  <div class="fsz">文字の大きさ<button type="button" data-f="-2">小</button><button type="button" data-f="0">中</button><button type="button" data-f="2">大</button></div>
 </header>
 <div class="bar">
   <div class="seg" role="tablist"><button type="button" data-v="card" class="on"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="7" height="14" rx="1.5"/><rect x="12" y="5" width="7" height="14" rx="1.5"/><path d="M21 8v8"/></svg>写真</button><button type="button" data-v="list"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>一覧</button></div>
@@ -1086,9 +1086,9 @@ $('copy').addEventListener('click', async () => {
   try { await navigator.clipboard.writeText(txt); } catch (err) { const ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
   toast('コピーしました。LINEに貼り付けて送ってください');
 });
-function setF(v){document.documentElement.style.setProperty('--fs',v+'px');document.querySelectorAll('.fsz button').forEach(b=>b.classList.toggle('on',b.dataset.f==v));try{localStorage.setItem('pk-fs',v)}catch(e){}}
+function setF(v){document.documentElement.style.setProperty('--fs',v+'px');document.querySelectorAll('.fsz button').forEach(b=>b.classList.toggle('on',b.dataset.f==v));try{localStorage.setItem('pk-fs2',v)}catch(e){}}
 document.querySelectorAll('.fsz button').forEach(b=>b.addEventListener('click',()=>setF(b.dataset.f)));
-let f0='0';try{f0=localStorage.getItem('pk-fs')||'0'}catch(e){}setF(f0);
+let f0='-2';try{f0=localStorage.getItem('pk-fs2')||'-2'}catch(e){}setF(f0);
 document.addEventListener('contextmenu',e=>{if(e.target.tagName==='IMG')e.preventDefault()});
 render();
 </script>
