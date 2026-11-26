@@ -1020,7 +1020,7 @@ const $ = id => document.getElementById(id);
 const sel = new Set(JSON.parse(sessionStorage.getItem('pk-sel') || '[]'));
 let view = 'card';
 const opt = JSON.parse(sessionStorage.getItem('pk-opt3') || '{}');
-const OPTS = {form:'依頼フォーム優先（2-3, 2-4）', high:'高い金額に合わせる', split:'商品を分ける', app:'商品オプションappで登録する（ご自身での登録が必要）'};
+const OPTS = {form:'依頼フォーム優先（2-3, 2-4）', high:'高い金額に合わせる', split:'商品を分ける（追加料金なし）', app:'商品オプションappで登録する（ご自身での登録が必要）'};
 const optHtml = it => { if (!it.extra) return ''; const o = opt[it.no] || 'form';
   return `<div class="opt" data-opt="${it.no}"><div class="oq">※価格が違うカラーorサイズがあります</div>${Object.keys(OPTS).map(k=>`<button type="button" data-o="${k}" class="orad ${o===k?'on':''}"><i></i><span>${OPTS[k].replace('（','<br>（')}</span></button>`).join('')}</div>`; };
 $('brandTitle').textContent = [DATA.brand, DATA.season, DATA.drop].filter(Boolean).join(' ');
