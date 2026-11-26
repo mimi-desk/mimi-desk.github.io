@@ -90,6 +90,13 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;-webkit
 .otop button[data-o=chg]{white-space:nowrap}
 .osub{display:flex;flex-direction:column;gap:6px;padding-left:12px;border-left:3px solid var(--line)}
 .tile .otop{grid-template-columns:1fr}
+.opt .orad{display:flex;align-items:center;gap:8px;background:#fff;color:var(--ink);border-color:var(--line)}
+.opt .orad i{flex:none;width:18px;height:18px;border-radius:50%;border:2px solid #cfd8d6;position:relative}
+.opt .orad.on{background:#f8efe9;color:var(--accent);border-color:var(--accent)}
+.opt .orad.on i{border-color:var(--accent)}
+.opt .orad.on i::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--accent)}
+.formbtn{display:block;margin-top:12px;text-align:center;background:var(--bg);color:#fff;text-decoration:none;font-weight:700;font-size:calc(16px + var(--fs));padding:12px;border-radius:12px}
+.formbtn span{font-size:.9em}
 </style>
 </head>
 <body>
@@ -98,6 +105,7 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;-webkit
   <div class="en">ITEM SELECT</div>
   <h1 id="brandTitle">商品セレクト</h1>
   <p id="brandNote">登録したい商品にチェックを入れて、下の「選んだ商品をコピー」を押してください。</p>
+  <a class="formbtn" href="https://mimidesk.netlify.app/" target="_blank" rel="noopener">依頼フォームはこちら <span>↗</span></a>
   <div class="fsz">文字の大きさ<button type="button" data-f="0">小</button><button type="button" data-f="2">中</button><button type="button" data-f="4">大</button></div>
 </header>
 <div class="bar">
@@ -1008,14 +1016,10 @@ const DATA = {
 const $ = id => document.getElementById(id);
 const sel = new Set(JSON.parse(sessionStorage.getItem('pk-sel') || '[]'));
 let view = 'card';
-const opt = JSON.parse(sessionStorage.getItem('pk-opt2') || '{}');
-const OPTS = {form:'依頼フォームに合わせる', chg:'変更する（未選択）', high:'高い金額に合わせる', split:'商品を分ける（追加料金なし）', app:'商品オプションappで登録する（ご自身での登録が必要）'};
-const sub = ['high','split','app'];
-const lbl = v => v.includes('（') ? v.replace('（','<small>（')+'</small>' : v;
-const optHtml = it => { if (!it.extra) return ''; const o = opt[it.no] || 'form'; const chg = o !== 'form';
-  return `<div class="opt" data-opt="${it.no}"><div class="oq">※価格が違うカラーorサイズがあります</div>
-  <div class="otop"><button type="button" data-o="form" class="${chg?'':'on'}">依頼フォームに合わせる</button><button type="button" data-o="chg" class="${chg?'on':''}">変更する ${chg?'▲':'▼'}</button></div>
-  ${chg ? `<div class="osub">${sub.map(k=>`<button type="button" data-o="${k}" class="${o===k?'on':''}">${lbl(OPTS[k])}</button>`).join('')}</div>` : ''}</div>`; };
+const opt = JSON.parse(sessionStorage.getItem('pk-opt3') || '{}');
+const OPTS = {form:'依頼フォーム（2-3・2-4）優先', high:'高い金額に合わせる', split:'商品を分ける', app:'商品オプションappで登録する'};
+const optHtml = it => { if (!it.extra) return ''; const o = opt[it.no] || 'form';
+  return `<div class="opt" data-opt="${it.no}"><div class="oq">※価格が違うカラーorサイズがあります</div>${Object.keys(OPTS).map(k=>`<button type="button" data-o="${k}" class="orad ${o===k?'on':''}"><i></i>${OPTS[k]}</button>`).join('')}</div>`; };
 $('brandTitle').textContent = `${DATA.brand}｜商品セレクト`;
 const yen = n => '₩' + n.toLocaleString('ko-KR');
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -1060,7 +1064,7 @@ function render() {
 }
 document.addEventListener('click', e => {
   const ob = e.target.closest('.opt button');
-  if (ob) { const no = ob.closest('.opt').dataset.opt; opt[no] = ob.dataset.o; sel.add(no); sessionStorage.setItem('pk-opt2', JSON.stringify(opt)); render(); return; }
+  if (ob) { const no = ob.closest('.opt').dataset.opt; opt[no] = ob.dataset.o; sel.add(no); sessionStorage.setItem('pk-opt3', JSON.stringify(opt)); render(); return; }
   if (e.target.closest('.opt')) return;
   const t = e.target.closest('[data-toggle]'); if (!t) return;
   const no = t.dataset.toggle; sel.has(no) ? sel.delete(no) : sel.add(no); render();
