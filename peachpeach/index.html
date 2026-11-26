@@ -113,7 +113,7 @@ img{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;-webkit
   <div class="fsz">文字の大きさ<button type="button" data-f="-2">小</button><button type="button" data-f="0">中</button><button type="button" data-f="2">大</button></div>
 </header>
 <div class="bar">
-  <div class="seg" role="tablist"><button type="button" data-v="card" class="on"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="7" height="14" rx="1.5"/><rect x="12" y="5" width="7" height="14" rx="1.5"/><path d="M21 8v8"/></svg>写真</button><button type="button" data-v="list"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>一覧</button></div>
+  <div class="seg" role="tablist"><button type="button" data-v="card" class="on"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="7" height="14" rx="1.5"/><rect x="12" y="5" width="7" height="14" rx="1.5"/><path d="M21 8v8"/></svg>詳細</button><button type="button" data-v="list"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>一覧</button></div>
   </div>
 <div class="bar2"><button type="button" id="all">すべて選択</button><label class="only"><input type="checkbox" id="onlySel">選んだものだけ表示する</label></div>
 <div id="cardView" class="cards"></div>
@@ -1023,7 +1023,7 @@ const sel = new Set(JSON.parse(sessionStorage.getItem('pk-sel') || '[]'));
 let view = 'card';
 const opt = JSON.parse(sessionStorage.getItem('pk-opt3') || '{}');
 const OPTS = {form:'依頼フォーム優先（2-3, 2-4）', high:'高い金額に合わせる', split:'商品を分ける（追加料金なし）', app:'商品オプションappで登録する（ご自身での登録が必要）'};
-const optHtml = it => { if (!it.extra) return ''; const o = opt[it.no] || 'form';
+const optHtml = (it, compact) => { if (!it.extra) return ''; if (compact) return '<div class="opt"><div class="oq">※価格が違うカラーorサイズがあります</div></div>'; const o = opt[it.no] || 'form';
   return `<div class="opt" data-opt="${it.no}"><div class="oq">※価格が違うカラーorサイズがあります</div>${Object.keys(OPTS).map(k=>`<button type="button" data-o="${k}" class="orad ${o===k?'on':''}"><i></i><span>${OPTS[k].replace('（','<br>（')}</span></button>`).join('')}</div>`; };
 $('brandTitle').textContent = [DATA.brand, DATA.season, DATA.drop].filter(Boolean).join(' ');
 const yen = n => '₩' + n.toLocaleString('ko-KR');
@@ -1059,7 +1059,7 @@ function render() {
       <div class="price">${yen(it.price)}</div>
       <div class="tn">${it.no} ${esc(it.ko)} ｜ ${esc(it.ja)}</div>
       <div class="ts">${it.colors.length?it.colors.map(c=>esc(c.en)).join('・'):'カラー：写真で確認'}</div>
-      <div class="ts">${esc(it.sizes)}</div>${it.extra?'<div class="ts ex">'+esc(it.extra)+'</div>':''}${optHtml(it)}</div>`).join('');
+      <div class="ts">${esc(it.sizes)}</div>${it.extra?'<div class="ts ex">'+esc(it.extra)+'</div>':''}${optHtml(it,true)}</div>`).join('');
   }
   const picked = DATA.items.filter(it => sel.has(it.no));
   $('n').textContent = picked.length;
