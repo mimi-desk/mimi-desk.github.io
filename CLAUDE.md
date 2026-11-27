@@ -7,8 +7,7 @@ mimi desk（BASE商品登録代行）のお客さん向け「商品セレクト�
 - `_template/index.html` … 基本の形（2026-11-26確定）。新しいブランドはこれをコピーして作る
 - `assets/deskicon.png` … mimi deskアイコン（全ブランド共通）
 - `<ブランド名>/index.html` … ブランドごとのピッカー（例：`peachpeach/`）
-- `<ブランド名>/pp360/` … KakaoStoryの写真（横360px・JPEG画質80%）
-- `<ブランド名>/pp/` … 単価表から切り出した写真（KakaoStory写真がない商品用）
+- `<ブランド名>/ph/` … 写真（`<商品番号>_<連番>.jpg`、横300px前後、1商品最大20枚）
 - 公開URL：`https://mimi-desk.github.io/<ブランド名>/`
 
 ## 新しいブランドの作り方
@@ -32,6 +31,7 @@ mimi desk（BASE商品登録代行）のお客さん向け「商品セレクト�
   - `photos`：写真の相対パス配列
 
 ## データの集め方
+- **いちばん速い方法**：PCの `mimiatelier_tool/<brand>/<season>/<brand>_picker_artifact.html`（Claude Codeの写真選び用ページ）に全商品の縮小写真が埋め込まれている。これを1ファイル取り込み、`<section class="item" data-key="NN">` ごとに画像を取り出して `ph/` に保存する（2026-11-27 peachpeachで実施）
 - 単価表（Excel風の画像）から：番号・韓国語名・単価・サイズ・価格違い
 - KakaoStory（まりあのChrome、ログイン済み）から：写真・カラー
   - Chromeの自動翻訳がかかっている場合、原文は `/a/activities/<id>` 側で取る or `translate="no"` を付けてから読み込んだ投稿を読む
