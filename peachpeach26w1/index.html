@@ -3,7 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>商品セレクト｜mimi desk</title>
+<title>PEACH PEACH 2026 WINTER 1st｜商品セレクト｜mimi desk</title>
+<meta name="description" content="PEACH PEACH 2026 WINTER 1st の商品から、登録したい商品を選んでLINEで送れます。">
+<meta property="og:title" content="PEACH PEACH 2026 WINTER 1st｜商品セレクト｜mimi desk">
+<meta property="og:description" content="PEACH PEACH 2026 WINTER 1st の商品から、登録したい商品を選んでLINEで送れます。">
+<meta property="og:image" content="https://mimi-desk.github.io/assets/og.jpg">
+<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&family=Kosugi+Maru&family=Zen+Maru+Gothic:wght@700&family=Noto+Sans+JP:wght@400;700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -128,7 +133,7 @@ html,body{overflow-x:hidden}
 <div class="bar2"><button type="button" id="all">すべて選択</button><label class="only"><input type="checkbox" id="onlySel">選んだものだけ表示する</label></div>
 <div id="cardView" class="cards"></div>
 <div id="listView" class="grid" hidden></div>
-<div class="empty" id="empty" hidden>該当する商品がありません</div>
+<div class="empty" id="empty" hidden></div>
 </div>
 <div class="foot"><div class="in">
   <div class="sum"><b id="n">0</b> 点選択中<br><span id="tot">合計 ₩0</span></div>
@@ -1365,7 +1370,7 @@ function match(it) {
 }
 function render() {
   const items = DATA.items.filter(match);
-  $('empty').hidden = !!items.length;
+  $('empty').hidden = !!items.length; $('empty').textContent = items.length ? '' : '該当する商品がありません';
   $('cardView').hidden = view !== 'card' || !items.length;
   $('listView').hidden = view !== 'list' || !items.length;
   if (view === 'card') {
