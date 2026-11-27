@@ -10,15 +10,16 @@
 <meta property="og:image" content="https://mimi-desk.github.io/assets/og.jpg">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&family=Kosugi+Maru&family=Zen+Maru+Gothic:wght@700&family=Noto+Sans+JP:wght@400;700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap&text=%E5%95%86%E5%93%81%E7%99%BB%E9%8C%B2%E4%BB%A3%E8%A1%8C%E3%81%94%E4%BE%9D%E9%A0%BC%E3%83%95%E3%82%A9%E3%83%BC%E3%83%A0%E3%81%AF%E3%81%93%E3%81%A1%E3%82%89" rel="stylesheet">
 <style>
 :root{--fs:0px;--bg:#73bcb4;--accent:#7b5644;--ink:#4a3830;--muted:#7d6b62;--line:#e3ebe9;--mint:#e3f4f2;--field:#f1f8f7;--pink:#c98682}
 *{box-sizing:border-box}
-body{margin:0;background:#fff;color:var(--ink);font-family:"Noto Sans JP","Noto Sans KR",sans-serif;font-size:calc(17px + var(--fs));line-height:1.6;-webkit-text-size-adjust:100%}
+body{margin:0;background:#fff;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Hiragino Kaku Gothic ProN","Apple SD Gothic Neo","Noto Sans JP","Noto Sans KR","Malgun Gothic",sans-serif;font-size:calc(17px + var(--fs));line-height:1.6;-webkit-text-size-adjust:100%}
 .wrap{max-width:720px;margin:0 auto;padding:0 12px 140px}
 header{padding:18px 4px 10px}
 header .en{font-family:Quicksand,sans-serif;color:var(--bg);letter-spacing:.25em;font-size:calc(12px + var(--fs))}
-header h1{font-family:"Zen Maru Gothic",sans-serif;font-size:min(26px,6vw);white-space:nowrap;margin:2px 0 4px;color:var(--accent)}
+header h1{font-family:inherit;font-size:min(26px,6vw);white-space:nowrap;margin:2px 0 4px;color:var(--accent)}
 header p{margin:0;font-size:calc(15px + var(--fs));color:var(--muted)}
 .bar{position:sticky;top:0;z-index:5;background:rgba(255,255,255,.96);backdrop-filter:blur(6px);padding:10px 0;border-bottom:1px solid var(--line);display:flex;gap:8px;align-items:center}
 .seg{display:flex;background:var(--field);border:2px solid var(--accent);border-radius:14px;padding:3px;flex:1}
@@ -1357,7 +1358,7 @@ $('brandTitle').textContent = [DATA.brand, DATA.season, DATA.drop].filter(Boolea
 const yen = n => '₩' + n.toLocaleString('ko-KR');
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function photos(it, size) {
-  if (it.photos.length) return it.photos.slice(0,20).map(u => `<img src="${esc(u)}" alt="" loading="lazy">`);
+  if (it.photos.length) return it.photos.slice(0,20).map(u => `<img src="${esc(u)}" alt="" loading="lazy" decoding="async">`);
   const n = Math.min(it.n || 6, 20);
   return Array.from({length: size === 'thumb' ? 1 : n}, (_, i) => { const c = it.colors[i % it.colors.length].hex; return `<div class="ph" style="background:${c}">${i+1}</div>`; });
 }
