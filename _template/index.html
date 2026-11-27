@@ -126,7 +126,7 @@ html,body{overflow-x:hidden}
   <div class="htop"><img class="deskicon" src="../assets/deskicon.png" alt="mimi desk"><a class="formbtn" href="https://mimidesk.netlify.app/" target="_blank" rel="noopener"><span class="ft">商品登録代行<br>ご依頼フォームはこちら</span><span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#73bcb4" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></span></a></div>
   <h1 id="brandTitle">商品セレクト</h1>
   <ol class="steps"><li><b>Step1</b>登録したい商品にチェックを入れる</li><li><b>Step2</b>下の「選んだ商品をコピー」を押す</li><li><b>Step3</b>LINEに送る</li></ol>
-  <div class="fsz">文字の大きさ<button type="button" data-f="-2">小</button><button type="button" data-f="0">中</button><button type="button" data-f="2">大</button></div>
+  <div class="fsz">文字の大きさ<button type="button" data-f="0">小</button><button type="button" data-f="3">中</button><button type="button" data-f="6">大</button></div>
 </header>
 <div class="bar">
   <div class="seg" role="tablist"><button type="button" data-v="card"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="7" height="14" rx="1.5"/><rect x="12" y="5" width="7" height="14" rx="1.5"/><path d="M21 8v8"/></svg>詳細</button><button type="button" data-v="list" class="on"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>一覧</button></div>
@@ -260,9 +260,9 @@ $('copy').addEventListener('click', async () => {
   try { await navigator.clipboard.writeText(txt); } catch (err) { const ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
   toast('コピーしました。LINEに貼り付けて送ってください');
 });
-function setF(v){document.documentElement.style.setProperty('--fs',v+'px');document.querySelectorAll('.fsz button').forEach(b=>b.classList.toggle('on',b.dataset.f==v));try{localStorage.setItem('pk-fs2',v)}catch(e){}}
+function setF(v){document.documentElement.style.setProperty('--fs',v+'px');document.querySelectorAll('.fsz button').forEach(b=>b.classList.toggle('on',b.dataset.f==v));try{localStorage.setItem('pk-fs3',v)}catch(e){}}
 document.querySelectorAll('.fsz button').forEach(b=>b.addEventListener('click',()=>setF(b.dataset.f)));
-let f0='-2';try{f0=localStorage.getItem('pk-fs2')||'-2'}catch(e){}setF(f0);
+let f0='0';try{f0=localStorage.getItem('pk-fs3')||'0'}catch(e){}setF(f0);
 document.addEventListener('contextmenu',e=>{if(e.target.tagName==='IMG')e.preventDefault()});
 render();
 </script>
