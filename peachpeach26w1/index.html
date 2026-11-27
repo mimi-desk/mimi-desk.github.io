@@ -121,6 +121,15 @@ html,body{overflow-x:hidden}
 .nm{font-weight:800!important;color:var(--ink)!important}
 .nm b{font-weight:800!important}
 .tile .tn{font-weight:800!important}
+.dt{margin-top:6px!important}
+.row2{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:start;margin-top:5px}
+.lbl{display:inline-block;font-size:calc(11px + var(--fs));font-weight:700;color:#fff;background:var(--bg);border-radius:999px;padding:1px 8px;line-height:1.6;white-space:nowrap;margin-top:1px}
+.nm{white-space:normal!important;overflow:visible!important}
+.card .opt{display:grid!important;grid-template-columns:1fr 1fr;gap:6px!important}
+.card .opt .oq{grid-column:1/-1}
+.card .opt .orad{padding:6px 8px!important;gap:6px!important;font-size:calc(12px + var(--fs))!important;line-height:1.3;min-height:48px}
+.card .opt .orad i{width:15px!important;height:15px!important}
+.card .opt .orad small,.card .opt .orad span br+*{font-size:.9em}
 </style>
 </head>
 <body>
@@ -1383,7 +1392,7 @@ function render() {
       <div class="cnt">写真 ${it.photos.length || Math.min(it.n||6,20)}枚・横にスクロール →</div>
       <div class="info"><div class="meta"><div class="price">${yen(it.price)}</div>
         <div class="nm">${it.no}　<b>${esc(it.ko)}</b> ｜ ${esc(it.en)} ｜ ${esc(it.ja)}</div>
-        <div class="dt">${colorsHtml(it)}${esc(it.sizes)}${it.extra?'　<span class="ex">'+esc(it.extra)+'</span>':''}</div>${optHtml(it)}</div>
+        <div class="dt"><div class="row2"><span class="lbl">カラー</span><span>${colorsHtml(it).replace(/<br>$/,'')}</span></div><div class="row2"><span class="lbl">サイズ</span><span>${esc(it.sizes)}${it.extra?'　<span class="ex">'+esc(it.extra)+'</span>':''}</span></div></div>${optHtml(it)}</div>
         <span class="chk" role="checkbox" aria-checked="${sel.has(it.no)}"></span></div></article>`).join('');
   } else {
     $('listView').innerHTML = items.map(it => `<div class="tile ${sel.has(it.no)?'sel':''}" data-toggle="${it.no}">
